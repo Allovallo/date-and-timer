@@ -1,5 +1,5 @@
 import '../css/common.css';
-// import BSN from 'bootstrap.native';
+import BSN from 'bootstrap.native';
 
 const refs = {
   modal: document.querySelector('#myModal'),
@@ -11,13 +11,14 @@ let promptCounter = 0;
 let hasSubscribed = false;
 const modal = new BSN.Modal('myModal');
 
+openModal();
+
 refs.modal.addEventListener('hide.bs.modal', openModal);
 refs.subscribeBtn.addEventListener('click', onSubscribeBtnClick);
 
 function openModal() {
   if (promptCounter === MAX_PROMPT_ATTEMPT || hasSubscribed) {
       console.log('Максимальна кількість набридів або підписався!');
-      clearInterval(intevalId);
       return;
   }  
   setTimeout(() => {
@@ -29,5 +30,5 @@ function openModal() {
 
 function onSubscribeBtnClick() {
   hasSubscribed = true;
-  modal.true();
+  modal.hide();
 }
