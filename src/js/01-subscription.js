@@ -1,29 +1,33 @@
 import '../css/common.css';
-import BSN from 'bootstrap.native';
+// import BSN from 'bootstrap.native';
 
+const refs = {
+  modal: document.querySelector('#myModal'),
+  subscribeBtn: document.querySelector('button[data-subscribe]'),
+}
 const PROMPT_DELAY = 1000;
 const MAX_PROMPT_ATTEMPT = 3;
-let modal = new BSN.Modal(
-  '#myModal', // target selector
-  { // options object
-    backdrop: 'static', // we don't want to dismiss Modal when Modal or backdrop is the click event target
-    keyboard: false // we don't want to dismiss Modal on pressing [Esc] key
-  }
-);
-
-console.log(modal);
-modal.show();
-
 let promptCounter = 0;
 let hasSubscribed = false;
+const modal = new BSN.Modal('myModal');
 
-const intevalId = setInterval(() => {
-    if (promptCounter === MAX_PROMPT_ATTEMPT) {
-        console.log('Зупиняємо інтервал!');
-        clearInterval(intevalId);
-        return;
-    }
-    console.log('Підпишісь на розсилку');
+refs.modal.addEventListener('hide.bs.modal', openModal);
+refs.subscribeBtn.addEventListener('click', onSubscribeBtnClick);
+
+function openModal() {
+  if (promptCounter === MAX_PROMPT_ATTEMPT || hasSubscribed) {
+      console.log('Максимальна кількість набридів або підписався!');
+      clearInterval(intevalId);
+      return;
+  }  
+  setTimeout(() => {
+    console.log('Відкриваємо набридалку');
+    modal.show();
     promptCounter += 1;
-    console.log(promptCounter);
-}, PROMPT_DELAY);
+  }, PROMPT_DELAY);
+}
+
+function onSubscribeBtnClick() {
+  hasSubscribed = true;
+  modal.true();
+}
